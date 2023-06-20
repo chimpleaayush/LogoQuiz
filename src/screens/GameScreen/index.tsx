@@ -91,7 +91,6 @@ const GameScreen = ({navigation}: GameScreenProps) => {
     console.log(logos.length);
     setScore(score - number);
   };
-  console.log(logos.length, 'fjkbfjk');
   return (
     <ScrollView
       contentInsetAdjustmentBehavior="automatic"
