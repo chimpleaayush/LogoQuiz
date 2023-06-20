@@ -15,9 +15,11 @@ import {
   DebugInstructions,
   Header,
 } from 'react-native/Libraries/NewAppScreen';
+import {useFocusEffect} from '@react-navigation/native';
 
 import {Timer, Options, InputBox, ImageBox} from './components';
-
+let data = require('../../assets/data.json');
+let logos = [...data];
 interface GameScreenProps {
   navigation: any;
 }
@@ -25,7 +27,7 @@ interface GameScreenProps {
 const GameScreen = ({navigation}: GameScreenProps) => {
   const [score, setScore] = useState(0);
   const [enteredName, setEnteredName] = useState('');
-  let logos = require('../../assets/data.json');
+
   const [timer, setTimer] = useState(30);
 
   //some bug need to corect timer
@@ -53,6 +55,19 @@ const GameScreen = ({navigation}: GameScreenProps) => {
   //   return () => timerIn && clearTimeout(timerIn);
   // }, [timer]);
 
+  useFocusEffect(
+    React.useCallback(() => {
+      if (logos.length === 0) {
+        logos = [...data];
+      }
+
+      setEnteredName('');
+      setTimer(30);
+      setScore(0);
+      return () => {};
+    }, []),
+  );
+
   useEffect(() => {
     if (logos?.length === 0) {
       navigation.navigate('ScoreScreen', {score: score});
@@ -71,10 +86,12 @@ const GameScreen = ({navigation}: GameScreenProps) => {
     setScore(score + number);
   };
   const decreaseScore = (number: number) => {
+    console.log(logos.length);
     logos.shift();
+    console.log(logos.length);
     setScore(score - number);
   };
-
+  console.log(logos.length, 'fjkbfjk');
   return (
     <ScrollView
       contentInsetAdjustmentBehavior="automatic"
